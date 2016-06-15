@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Budgeter</string>
+    <string name="drawer_open">Drawer Open</string>
+    <string name="drawer_closed">Drawer Closed</string>
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_graphs">Graphs</string>
+    <string name="nav_history">Historic</string>
 </resources>
