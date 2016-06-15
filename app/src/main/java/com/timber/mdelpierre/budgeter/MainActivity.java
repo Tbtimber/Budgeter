@@ -1,5 +1,8 @@
 package com.timber.mdelpierre.budgeter;
 
+import android.app.Fragment;
+
+import android.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,13 +15,15 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnTabClickListener;
+import com.timber.mdelpierre.budgeter.ui.GraphFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnTabClickListener{
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -35,8 +40,6 @@ public class MainActivity extends AppCompatActivity {
     //Private field
     private String[] mPlanetTiles = {"Earth","Neptune","URANUS"};
     private ActionBarDrawerToggle mDrawerToggle;
-    private CharSequence mDrawerTitle;
-    private CharSequence mTitle;
     private BottomBar mBottomNav; //https://github.com/roughike/BottomBar
 
 
@@ -50,11 +53,11 @@ public class MainActivity extends AppCompatActivity {
 
         //Set Bottom Nav Bar
         mBottomNav = BottomBar.attach(mContentLayout, savedInstanceState);
+        mBottomNav.setMaxFixedTabs(2);
         mBottomNav.setItems(R.menu.bottom_nav_bar);
+        mBottomNav.setOnTabClickListener(this);
 
         //Setup Drawer Layout
-        mDrawerTitle = mTitle = getTitle();
-
         setSupportActionBar(mToolbar);
         mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_tv, mPlanetTiles));
 
@@ -86,5 +89,28 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mBottomNav.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onTabSelected(int position) {
+        Log.e("Test","Tab selected : " + position);
+        switch (position) {
+            case 0:
+                break;
+            case 1:
+                FragmentManager fm = getFragmentManager();
+                fm.beginTransaction().replace(R.id.content_frame, GraphFragment.newInstance()).commit();
+
+                break;
+            case 2:
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onTabReSelected(int position) {
+
     }
 }
