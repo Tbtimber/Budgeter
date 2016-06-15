@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.roughike.bottombar.BottomBar;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -30,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
+    private BottomBar mBottomNav; //https://github.com/roughike/BottomBar
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        //Setup Drawer Layout
         mDrawerTitle = mTitle = getTitle();
-        //getActionBar().set
 
         setSupportActionBar(mToolbar);
         mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_tv, mPlanetTiles));
@@ -62,6 +67,14 @@ public class MainActivity extends AppCompatActivity {
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.addDrawerListener(mDrawerToggle);
 
+        //Set Bottom Nav Bar
+        mBottomNav = BottomBar.attach(this, savedInstanceState);
+        mBottomNav.setItems(R.menu.bottom_nav_bar);
+    }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mBottomNav.onSaveInstanceState(outState);
     }
 }
