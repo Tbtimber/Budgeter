@@ -5,6 +5,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -43,6 +44,10 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        //Set Bottom Nav Bar //TODO See if there is a better ui lib to do the job
+        mBottomNav = BottomBar.attach(this, savedInstanceState);
+        mBottomNav.setItems(R.menu.bottom_nav_bar);
+
         //Setup Drawer Layout
         mDrawerTitle = mTitle = getTitle();
 
@@ -54,22 +59,26 @@ public class MainActivity extends AppCompatActivity {
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                mBottomNav.show();
             }
 
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                mBottomNav.hide();
             }
 
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                final float barHeight = mBottomNav.getBar().getHeight();
+                mBottomNav.getBar().animate().translationY(slideOffset*barHeight);
+            }
         };
         mDrawerToggle.syncState();
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.addDrawerListener(mDrawerToggle);
 
-        //Set Bottom Nav Bar
-        mBottomNav = BottomBar.attach(this, savedInstanceState);
-        mBottomNav.setItems(R.menu.bottom_nav_bar);
+
     }
 
     @Override
