@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import com.roughike.bottombar.BottomBar;
@@ -21,6 +22,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
+
+    @Bind(R.id.content_frame)
+    FrameLayout mContentLayout;
 
     @Bind(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
@@ -44,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        //Set Bottom Nav Bar //TODO See if there is a better ui lib to do the job
-        mBottomNav = BottomBar.attach(this, savedInstanceState);
+        //Set Bottom Nav Bar
+        mBottomNav = BottomBar.attach(mContentLayout, savedInstanceState);
         mBottomNav.setItems(R.menu.bottom_nav_bar);
 
         //Setup Drawer Layout
@@ -59,19 +63,16 @@ public class MainActivity extends AppCompatActivity {
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-                mBottomNav.show();
             }
 
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-                mBottomNav.hide();
             }
 
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 final float barHeight = mBottomNav.getBar().getHeight();
-                mBottomNav.getBar().animate().translationY(slideOffset*barHeight);
             }
         };
         mDrawerToggle.syncState();
