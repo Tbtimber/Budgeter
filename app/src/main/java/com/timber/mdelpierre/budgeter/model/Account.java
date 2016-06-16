@@ -12,7 +12,15 @@ public class Account extends RealmObject {
     private String name;
 
 
+    public Account() {
+    }
+
     public Account(String name) {
         transactions = new RealmList<>();
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 }

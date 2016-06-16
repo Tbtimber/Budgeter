@@ -4,6 +4,7 @@ import android.app.Fragment;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.SharedPreferences;
 import android.database.DatabaseErrorHandler;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,13 +19,19 @@ import android.widget.ListView;
 
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabClickListener;
+import com.timber.mdelpierre.budgeter.model.Account;
+import com.timber.mdelpierre.budgeter.persistance.RealmHelper;
 import com.timber.mdelpierre.budgeter.ui.DashboardFragment;
 import com.timber.mdelpierre.budgeter.ui.GraphFragment;
 import com.timber.mdelpierre.budgeter.ui.HistoryFragment;
+import com.timber.mdelpierre.budgeter.ui.adapter.NavDrawerAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-
+import io.realm.Realm;
 
 
 public class MainActivity extends AppCompatActivity implements OnTabClickListener{
@@ -42,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
     ListView mDrawerList;
 
     //Private field
-    private String[] mPlanetTiles = {"Earth","Neptune","URANUS"};
+    private List<Account> mPlanetTiles;
     private ActionBarDrawerToggle mDrawerToggle;
     private BottomBar mBottomNav; //https://github.com/roughike/BottomBar
 
@@ -52,7 +59,15 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        mPlanetTiles = new ArrayList<>();
+        mPlanetTiles.add(new Account("Mercure"));
+        mPlanetTiles.add(new Account("Venus"));
+        mPlanetTiles.add(new Account("Terre"));
+        mPlanetTiles.add(new Account("Mars"));
+        mPlanetTiles.add(new Account("Jupiter"));
+        mPlanetTiles.add(new Account("Saturne"));
+        mPlanetTiles.add(new Account("Uranus"));
+        mPlanetTiles.add(new Account("Neptune"));
         ButterKnife.bind(this);
 
         //Set Bottom Nav Bar
@@ -63,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
 
         //Setup Drawer Layout
         setSupportActionBar(mToolbar);
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_tv, mPlanetTiles));
+        mDrawerList.setAdapter(new NavDrawerAdapter(mPlanetTiles,this));
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,  mToolbar, R.string.drawer_open, R.string.drawer_closed) {
             /** Called when a drawer has settled in a completely closed state. */
@@ -82,6 +97,8 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.addDrawerListener(mDrawerToggle);
 
+        RealmHelper.initRealm(this);
+
 
     }
 
@@ -93,7 +110,6 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
 
     @Override
     public void onTabSelected(int position) {
-        Log.e("Test","Tab selected : " + position);
         switch (position) {
             case 0:
                 FragmentManager fm0 = getFragmentManager();
