@@ -10,10 +10,10 @@ import io.realm.annotations.PrimaryKey;
  */
 public class Account extends RealmObject {
     @PrimaryKey
-    private long id;
-    private RealmList<Transaction> transactions;
-    private String name;
-    private double accountBalance;
+    public long id;
+    public RealmList<Transaction> transactions;
+    public String name;
+    public double accountBalance;
 
 
     public Account() {

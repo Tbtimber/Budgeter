@@ -10,10 +10,10 @@ import io.realm.annotations.PrimaryKey;
  */
 public class Transaction extends RealmObject {
     @PrimaryKey
-    private long id;
-    private Date date;
-    private double value;
-    private String tag;
+    public long id;
+    public Date date;
+    public double value;
+    public String tag;
 
     public Transaction() {
     }

@@ -9,9 +9,10 @@ import io.realm.annotations.PrimaryKey;
  */
 public class Login extends RealmObject {
     @PrimaryKey
-    private long id;
-    private String login;
-    private RealmList<Account> accounts;
+    public long id;
+    public String login;
+    public RealmList<Account> accounts;
+    public int nbAccount;
 
     public Login() {
     }

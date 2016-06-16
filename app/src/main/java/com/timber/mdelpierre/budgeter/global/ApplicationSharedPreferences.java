@@ -12,6 +12,8 @@ public class ApplicationSharedPreferences {
     public static final String CURRENT_ACCOUNT = "current_account";
     private static final String PREFS_NAME = "BudgeterSharedPreferences";
     public static final String IS_CONNECTED = "isConnected";
+    public static final String NB_LOGIN = "nbLogin";
+    public static final String NB_ACCOUNT = "nbAccount";
     // Private fields
     // ---------------------------------------------------------------------------------------------
     private static ApplicationSharedPreferences instance;
@@ -60,5 +62,33 @@ public class ApplicationSharedPreferences {
 
     public void setIsConnected(boolean value) {
         editor.putBoolean(IS_CONNECTED, value);
+    }
+
+    public int getNbAccount() {
+        return applicationSharedPreferences.getInt(NB_ACCOUNT, -1);
+    }
+
+    public void setNbAccount(int value) {
+        editor.putInt(NB_ACCOUNT, value);
+        editor.commit();
+    }
+
+    public int getNbLogin() {
+        return applicationSharedPreferences.getInt(NB_LOGIN, -1);
+    }
+
+    public void setNbLogin(int value) {
+        editor.putInt(NB_LOGIN, value);
+        editor.commit();
+    }
+
+    public void incrementNbLogin() {
+        editor.putInt(NB_LOGIN, getNbLogin() + 1);
+        editor.commit();
+    }
+
+    public void incrementNbAccount() {
+        editor.putInt(NB_ACCOUNT, getNbAccount() + 1);
+        editor.commit();
     }
 }

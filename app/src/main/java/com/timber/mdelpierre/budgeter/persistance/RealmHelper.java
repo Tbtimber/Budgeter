@@ -1,6 +1,7 @@
 package com.timber.mdelpierre.budgeter.persistance;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.timber.mdelpierre.budgeter.global.ApplicationSharedPreferences;
 import com.timber.mdelpierre.budgeter.model.Account;
@@ -26,22 +27,29 @@ public class RealmHelper {
         realm = Realm.getInstance(realmconfig);
     }
 
-    public static void addLogin(Context context, final String login) {
+    public static void addLogin(final Context context, final String login) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                realm.copyToRealmOrUpdate(new Login(login));
+                ApplicationSharedPreferences.getInstance(context).incrementNbLogin();
+                Login log = realm.createObject(Login.class);
+                log.login = login;
+                log.id = ApplicationSharedPreferences.getInstance(context).getNbLogin();
             }
         });
     }
 
-    public static void addAccount(Context context, final String login, final String accountName) {
+    public static void addAccount(final Context context, final String login, final String accountName) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 RealmResults<Login> logins = realm.where(Login.class).equalTo("login", login).findAll();
                 if(logins != null && !logins.isEmpty()) {
-                    logins.get(0).addAccount(accountName);
+                    ApplicationSharedPreferences.getInstance(context).incrementNbAccount();
+                    Account ac = realm.createObject(Account.class);
+                    ac.name = accountName;
+                    ac.id = ApplicationSharedPreferences.getInstance(context).getNbAccount();
+                    logins.get(0).accounts.add(ac);
                 }
             }
         });
