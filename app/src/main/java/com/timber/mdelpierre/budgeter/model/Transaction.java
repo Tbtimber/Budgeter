@@ -15,6 +15,9 @@ public class Transaction extends RealmObject {
     private double value;
     private String tag;
 
+    public Transaction() {
+    }
+
     public Transaction(Date date, double value, String tag) {
         this.date = date;
         this.value = value;

@@ -10,6 +10,9 @@ public class Login extends RealmObject {
     private String login;
     private RealmList<Account> accounts;
 
+    public Login() {
+    }
+
     public Login(String login) {
         this.login = login;
         accounts = new RealmList<>();
