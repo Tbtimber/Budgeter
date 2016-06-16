@@ -2,13 +2,17 @@ package com.timber.mdelpierre.budgeter.model;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Matthieu on 16/06/2016.
  */
 public class Login extends RealmObject {
-    private String login;
-    private RealmList<Account> accounts;
+    @PrimaryKey
+    public long id;
+    public String login;
+    public RealmList<Account> accounts;
+    public int nbAccount;
 
     public Login() {
     }
@@ -24,4 +28,7 @@ public class Login extends RealmObject {
         }
     }
 
+    public RealmList<Account> getAccounts() {
+        return accounts;
+    }
 }

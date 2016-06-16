@@ -5,9 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.timber.mdelpierre.budgeter.MainActivity;
 import com.timber.mdelpierre.budgeter.R;
+import com.timber.mdelpierre.budgeter.global.ApplicationSharedPreferences;
+import com.timber.mdelpierre.budgeter.persistance.RealmHelper;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -18,12 +22,16 @@ import butterknife.OnClick;
  */
 public class LoginActivity extends AppCompatActivity {
 
+    @Bind(R.id.et_login_login)
+    EditText mEtLogin;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         ButterKnife.bind(this);
+        RealmHelper.initRealm(this);
 
 
     }
@@ -31,7 +39,15 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.bt_login)
     void login() {
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        if(mEtLogin.getText().length() < 2) {
+            Toast.makeText(this, getResources().getText(R.string.toast_login_invalid), Toast.LENGTH_LONG ).show();
+        } else {
+            ApplicationSharedPreferences.getInstance(this).setIsConnected(true);
+            ApplicationSharedPreferences.getInstance(this).setCurrentLogin(mEtLogin.getText().toString());
+            RealmHelper.addLogin(this,mEtLogin.getText().toString());
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            finish();
+        }
     }
 
 

@@ -1,6 +1,7 @@
 package com.timber.mdelpierre.budgeter.ui.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +57,7 @@ public class NavDrawerAdapter extends BaseAdapter {
         if(position < mAccounts.size()) {
             holder.getmTvNavAdapter().setText(mAccounts.get(position).getName());
         }
-
+        Log.e("test", "Position : " + position + "\nName : " + mAccounts.get(position).getName());
 
         return convertView;
     }
