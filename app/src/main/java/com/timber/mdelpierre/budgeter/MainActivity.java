@@ -3,6 +3,8 @@ package com.timber.mdelpierre.budgeter;
 import android.app.Fragment;
 
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.database.DatabaseErrorHandler;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +18,9 @@ import android.widget.ListView;
 
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabClickListener;
+import com.timber.mdelpierre.budgeter.ui.DashboardFragment;
 import com.timber.mdelpierre.budgeter.ui.GraphFragment;
+import com.timber.mdelpierre.budgeter.ui.HistoryFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -73,10 +77,6 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
                 super.onDrawerOpened(drawerView);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
-
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-                final float barHeight = mBottomNav.getBar().getHeight();
-            }
         };
         mDrawerToggle.syncState();
         // Set the drawer toggle as the DrawerListener
@@ -96,13 +96,16 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
         Log.e("Test","Tab selected : " + position);
         switch (position) {
             case 0:
+                FragmentManager fm0 = getFragmentManager();
+                fm0.beginTransaction().replace(R.id.content_frame, DashboardFragment.newInstance()).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
                 break;
             case 1:
-                FragmentManager fm = getFragmentManager();
-                fm.beginTransaction().replace(R.id.content_frame, GraphFragment.newInstance()).commit();
-
+                FragmentManager fm1 = getFragmentManager();
+                fm1.beginTransaction().replace(R.id.content_frame, GraphFragment.newInstance()).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
                 break;
             case 2:
+                FragmentManager fm2 = getFragmentManager();
+                fm2.beginTransaction().replace(R.id.content_frame, HistoryFragment.newInstance()).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
                 break;
             default:
                 break;
