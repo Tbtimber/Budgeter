@@ -23,4 +23,8 @@ public class Transaction extends RealmObject {
         this.value = value;
         this.tag = tag;
     }
+
+    public double getValue() {
+        return value;
+    }
 }

@@ -1,9 +1,11 @@
 package com.timber.mdelpierre.budgeter;
 
+import android.app.DialogFragment;
 import android.app.Fragment;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.DatabaseErrorHandler;
 import android.support.v4.widget.DrawerLayout;
@@ -14,23 +16,34 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabClickListener;
+import com.timber.mdelpierre.budgeter.global.ApplicationSharedPreferences;
 import com.timber.mdelpierre.budgeter.model.Account;
+import com.timber.mdelpierre.budgeter.model.Transaction;
 import com.timber.mdelpierre.budgeter.persistance.RealmHelper;
 import com.timber.mdelpierre.budgeter.ui.DashboardFragment;
+import com.timber.mdelpierre.budgeter.ui.DialogAddAccount;
 import com.timber.mdelpierre.budgeter.ui.GraphFragment;
 import com.timber.mdelpierre.budgeter.ui.HistoryFragment;
+import com.timber.mdelpierre.budgeter.ui.LoginActivity;
 import com.timber.mdelpierre.budgeter.ui.adapter.NavDrawerAdapter;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.realm.Realm;
 
 
@@ -47,6 +60,9 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
 
     @Bind(R.id.left_drawer)
     ListView mDrawerList;
+
+    @Bind(R.id.tv_nav_header_name)
+    TextView mTvHeaderName;
 
     //Private field
     private List<Account> mPlanetTiles;
@@ -69,6 +85,10 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
         mPlanetTiles.add(new Account("Uranus"));
         mPlanetTiles.add(new Account("Neptune"));
         ButterKnife.bind(this);
+        RealmHelper.initRealm(this);
+
+        mTvHeaderName.setText(ApplicationSharedPreferences.getInstance(this).getCurrentLogin());
+
 
         //Set Bottom Nav Bar
         mBottomNav = BottomBar.attach(mContentLayout, savedInstanceState);
@@ -78,7 +98,8 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
 
         //Setup Drawer Layout
         setSupportActionBar(mToolbar);
-        mDrawerList.setAdapter(new NavDrawerAdapter(mPlanetTiles,this));
+        //mDrawerList.setAdapter(new NavDrawerAdapter(mPlanetTiles,this));
+        mDrawerList.setAdapter(new NavDrawerAdapter(RealmHelper.getAccountsForLogin(ApplicationSharedPreferences.getInstance(this).getCurrentLogin()),this));
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,  mToolbar, R.string.drawer_open, R.string.drawer_closed) {
             /** Called when a drawer has settled in a completely closed state. */
@@ -97,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.addDrawerListener(mDrawerToggle);
 
-        RealmHelper.initRealm(this);
+
 
 
     }
@@ -132,4 +153,19 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
     public void onTabReSelected(int position) {
 
     }
+
+    @OnClick(R.id.tv_disonnect_drawer)
+    void disconnect() {
+        ApplicationSharedPreferences.getInstance(this).setIsConnected(false);
+        ApplicationSharedPreferences.getInstance(this).setCurrentLogin("");
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
+    }
+
+    @OnClick(R.id.tv_add_account)
+    void addAccount() {
+        DialogFragment addAccount = new DialogAddAccount();
+        addAccount.show(getFragmentManager(), "");
+    }
+
 }

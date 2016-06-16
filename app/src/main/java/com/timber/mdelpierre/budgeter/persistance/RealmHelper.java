@@ -2,11 +2,13 @@ package com.timber.mdelpierre.budgeter.persistance;
 
 import android.content.Context;
 
+import com.timber.mdelpierre.budgeter.global.ApplicationSharedPreferences;
 import com.timber.mdelpierre.budgeter.model.Account;
 import com.timber.mdelpierre.budgeter.model.Login;
 
 import java.util.List;
 
+import io.realm.OrderedRealmCollection;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
@@ -43,5 +45,21 @@ public class RealmHelper {
                 }
             }
         });
+    }
+
+    public static Account getAccountForLogin(String login, String accountName) {
+        RealmResults<Login> logins = realm.where(Login.class).equalTo("login", login).equalTo("accounts.name", accountName).findAll();
+        for (Account ac: logins.get(0).getAccounts()) {
+            if(ac.getName().equalsIgnoreCase(accountName)) {
+                return ac;
+            }
+        }
+        return null;
+    }
+
+    public static List<Account> getAccountsForLogin(String login) {
+        RealmResults<Login> logins = realm.where(Login.class).equalTo("login", login).findAll();
+
+        return logins.get(0).getAccounts();
     }
 }

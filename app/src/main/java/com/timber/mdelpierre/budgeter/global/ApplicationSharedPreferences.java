@@ -11,7 +11,7 @@ public class ApplicationSharedPreferences {
     public static final String CURRENT_LOGIN = "current_login";
     public static final String CURRENT_ACCOUNT = "current_account";
     private static final String PREFS_NAME = "BudgeterSharedPreferences";
-
+    public static final String IS_CONNECTED = "isConnected";
     // Private fields
     // ---------------------------------------------------------------------------------------------
     private static ApplicationSharedPreferences instance;
@@ -25,6 +25,17 @@ public class ApplicationSharedPreferences {
         editor = applicationSharedPreferences.edit();
     }
 
+    // Singleton
+    // ---------------------------------------------------------------------------------------------
+    public static ApplicationSharedPreferences getInstance(Context context) {
+        if (instance == null) {
+            instance = new ApplicationSharedPreferences(context);
+        }
+        return instance;
+    }
+
+    // Setter & Getter
+    // ---------------------------------------------------------------------------------------------
     public String getCurrentLogin() {
         return applicationSharedPreferences.getString(CURRENT_LOGIN,null);
     }
@@ -43,4 +54,11 @@ public class ApplicationSharedPreferences {
         editor.commit();
     }
 
+    public boolean getIsConnected() {
+        return applicationSharedPreferences.getBoolean(IS_CONNECTED, false);
+    }
+
+    public void setIsConnected(boolean value) {
+        editor.putBoolean(IS_CONNECTED, value);
+    }
 }
