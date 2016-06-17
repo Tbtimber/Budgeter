@@ -44,5 +44,8 @@ public class SplashActivity extends AppCompatActivity {
         if(ApplicationSharedPreferences.getInstance(this).getNbLogin() == -1) {
             ApplicationSharedPreferences.getInstance(this).setNbLogin(0);
         }
+        if(ApplicationSharedPreferences.getInstance(this).getNbLogin() == -1) {
+            ApplicationSharedPreferences.getInstance(this).setNbTransaction(0);
+        }
     }
 }
