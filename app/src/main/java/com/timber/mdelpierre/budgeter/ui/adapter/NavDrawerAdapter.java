@@ -57,7 +57,6 @@ public class NavDrawerAdapter extends BaseAdapter {
         if(position < mAccounts.size()) {
             holder.getmTvNavAdapter().setText(mAccounts.get(position).getName());
         }
-        Log.e("test", "Position : " + position + "\nName : " + mAccounts.get(position).getName());
 
         return convertView;
     }

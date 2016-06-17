@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_centerInParent="true">
     <TextView
+        android:id="@+id/mainTVDASHBOARD"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="DASHBOARD !"
