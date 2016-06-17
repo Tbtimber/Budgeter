@@ -81,8 +81,6 @@ public class RealmHelper {
                 }
             }
         });
-
-        Log.e("REALMHELPER", "Transaction added of : " + value);
     }
 
     public static void attachListener(RealmChangeListener listener) {

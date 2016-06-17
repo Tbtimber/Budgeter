@@ -35,7 +35,8 @@ public class DashboardFragment extends Fragment {
     CheckBox mCbIsIncome;
     @Bind(R.id.tv_show_Balance)
     TextView mTbShowBalance;
-
+    @Bind(R.id.mainTVDASHBOARD)
+    TextView mTvDashboard;
     public static Fragment newInstance() {
         return new DashboardFragment();
     }
@@ -47,7 +48,7 @@ public class DashboardFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
         ButterKnife.bind(this, v);
-
+        mTvDashboard.setText(ApplicationSharedPreferences.getInstance(getActivity()).getCurrentAccount());
         mTbShowBalance.setText("Current Balance : " + RealmHelper.getBalanceForAccount(ApplicationSharedPreferences.getInstance(getActivity()).getCurrentLogin(), ApplicationSharedPreferences.getInstance(getActivity()).getCurrentAccount()));
 
         RealmHelper.attachListener(new RealmChangeListener() {
@@ -63,17 +64,16 @@ public class DashboardFragment extends Fragment {
 
     @OnClick(R.id.bt_registerTransaction)
     void registerTransaction() {
-        double trValue = Double.parseDouble(mEtTrValue.getText().toString());
-        if(!mCbIsIncome.isChecked()) {
-            trValue *= -1;
+        try {
+            double trValue = Double.parseDouble(mEtTrValue.getText().toString());
+            if(!mCbIsIncome.isChecked()) {
+                trValue *= -1;
+            }
+
+            RealmHelper.addTransactionToAccount(getActivity(), ApplicationSharedPreferences.getInstance(getActivity()).getCurrentLogin(),ApplicationSharedPreferences.getInstance(getActivity()).getCurrentAccount(), trValue);
+        } catch (NumberFormatException e) {
+            return;
         }
 
-        RealmHelper.addTransactionToAccount(getActivity(), ApplicationSharedPreferences.getInstance(getActivity()).getCurrentLogin(),ApplicationSharedPreferences.getInstance(getActivity()).getCurrentAccount(), trValue);
     }
-
-
-    // RealmListener :
-    // -------------------------------------------------------------------------------------------
-
-
 }

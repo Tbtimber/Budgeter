@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
     //Private field
     private ActionBarDrawerToggle mDrawerToggle;
     private BottomBar mBottomNav; //https://github.com/roughike/BottomBar
-
+    private NavDrawerAdapter mNavAdapter;
 
 
     @Override
@@ -81,10 +82,7 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
         ButterKnife.bind(this);
         RealmHelper.initRealm(this);
 
-
-
         mTvHeaderName.setText(ApplicationSharedPreferences.getInstance(this).getCurrentLogin());
-
 
         //Set Bottom Nav Bar
         mBottomNav = BottomBar.attach(mLlMain, savedInstanceState);
@@ -94,8 +92,11 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
 
         //Setup Drawer Layout
         setSupportActionBar(mToolbar);
-        mDrawerList.setAdapter(new NavDrawerAdapter(RealmHelper.getAccountsForLogin(ApplicationSharedPreferences.getInstance(this).getCurrentLogin()),this));
+        mNavAdapter = new NavDrawerAdapter(RealmHelper.getAccountsForLogin(ApplicationSharedPreferences.getInstance(this).getCurrentLogin()),this);
 
+
+        mDrawerList.setAdapter(mNavAdapter);
+        mDrawerList.setOnItemClickListener(mDrawerListViewListener);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,  mToolbar, R.string.drawer_open, R.string.drawer_closed) {
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
@@ -112,8 +113,6 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
         mDrawerToggle.syncState();
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.addDrawerListener(mDrawerToggle);
-
-
 
 
     }
@@ -163,5 +162,19 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
         addAccount.show(getFragmentManager(), "");
     }
 
-
+    // Drawer Listener
+    // -----------------------------------------------------------------------------------------
+    private AdapterView.OnItemClickListener mDrawerListViewListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Account ac = (Account)mNavAdapter.getItem(position);
+            if(ac.name.equalsIgnoreCase(ApplicationSharedPreferences.getInstance(getApplicationContext()).getCurrentAccount())) {
+                return;
+            } else {
+                ApplicationSharedPreferences.getInstance(getApplicationContext()).setCurrentAccount(ac.name);
+                onTabSelected(mBottomNav.getCurrentTabPosition());
+            }
+            mDrawerLayout.closeDrawers();
+        }
+    };
 }
