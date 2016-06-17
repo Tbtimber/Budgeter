@@ -6,4 +6,5 @@
     android:layout_height="wrap_content"
     android:logo="@drawable/ic_list_black_24dp"
     android:minHeight="?attr/actionBarSize"
-    android:textColor="@android:color/white"/>
+    android:textColor="#FFF"
+    android:background="@drawable/side_nav_bar"/>

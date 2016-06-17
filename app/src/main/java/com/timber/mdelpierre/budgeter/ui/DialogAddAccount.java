@@ -41,6 +41,18 @@ public class DialogAddAccount extends DialogFragment {
             }
         });
 
+        builder.setView(view).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
         return builder.create();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
 }

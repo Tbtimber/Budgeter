@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -64,8 +65,10 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
     @Bind(R.id.tv_nav_header_name)
     TextView mTvHeaderName;
 
+    @Bind(R.id.ll_main)
+    LinearLayout mLlMain;
+
     //Private field
-    private List<Account> mPlanetTiles;
     private ActionBarDrawerToggle mDrawerToggle;
     private BottomBar mBottomNav; //https://github.com/roughike/BottomBar
 
@@ -75,15 +78,6 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mPlanetTiles = new ArrayList<>();
-        mPlanetTiles.add(new Account("Mercure"));
-        mPlanetTiles.add(new Account("Venus"));
-        mPlanetTiles.add(new Account("Terre"));
-        mPlanetTiles.add(new Account("Mars"));
-        mPlanetTiles.add(new Account("Jupiter"));
-        mPlanetTiles.add(new Account("Saturne"));
-        mPlanetTiles.add(new Account("Uranus"));
-        mPlanetTiles.add(new Account("Neptune"));
         ButterKnife.bind(this);
         RealmHelper.initRealm(this);
 
@@ -91,14 +85,13 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
 
 
         //Set Bottom Nav Bar
-        mBottomNav = BottomBar.attach(mContentLayout, savedInstanceState);
+        mBottomNav = BottomBar.attach(mLlMain, savedInstanceState);
         mBottomNav.setMaxFixedTabs(2);
         mBottomNav.setItems(R.menu.bottom_nav_bar);
         mBottomNav.setOnTabClickListener(this);
 
         //Setup Drawer Layout
         setSupportActionBar(mToolbar);
-        //mDrawerList.setAdapter(new NavDrawerAdapter(mPlanetTiles,this));
         mDrawerList.setAdapter(new NavDrawerAdapter(RealmHelper.getAccountsForLogin(ApplicationSharedPreferences.getInstance(this).getCurrentLogin()),this));
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,  mToolbar, R.string.drawer_open, R.string.drawer_closed) {
@@ -166,6 +159,11 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
     void addAccount() {
         DialogFragment addAccount = new DialogAddAccount();
         addAccount.show(getFragmentManager(), "");
+    }
+
+    @OnClick(R.id.bt_registerTransaction)
+    void registerTransaction() {
+
     }
 
 }
