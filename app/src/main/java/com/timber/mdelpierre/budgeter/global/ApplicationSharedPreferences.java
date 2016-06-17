@@ -14,6 +14,7 @@ public class ApplicationSharedPreferences {
     public static final String IS_CONNECTED = "isConnected";
     public static final String NB_LOGIN = "nbLogin";
     public static final String NB_ACCOUNT = "nbAccount";
+    public static final String NB_TRANSACTION = "nbTransaction";
     // Private fields
     // ---------------------------------------------------------------------------------------------
     private static ApplicationSharedPreferences instance;
@@ -89,6 +90,20 @@ public class ApplicationSharedPreferences {
 
     public void incrementNbAccount() {
         editor.putInt(NB_ACCOUNT, getNbAccount() + 1);
+        editor.commit();
+    }
+
+    public long getNbTransaction() {
+        return applicationSharedPreferences.getLong(NB_TRANSACTION, -1);
+    }
+
+    public void setNbTransaction(long value) {
+        editor.putLong(NB_TRANSACTION, value);
+        editor.commit();
+    }
+
+    public void incrementNbTransaction() {
+        editor.putLong(NB_TRANSACTION, getNbTransaction() + 1);
         editor.commit();
     }
 }

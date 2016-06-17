@@ -81,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
         ButterKnife.bind(this);
         RealmHelper.initRealm(this);
 
+
+
         mTvHeaderName.setText(ApplicationSharedPreferences.getInstance(this).getCurrentLogin());
 
 
@@ -161,9 +163,5 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
         addAccount.show(getFragmentManager(), "");
     }
 
-    @OnClick(R.id.bt_registerTransaction)
-    void registerTransaction() {
-
-    }
 
 }
