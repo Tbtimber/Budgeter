@@ -113,7 +113,9 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
         mDrawerToggle.syncState();
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.addDrawerListener(mDrawerToggle);
-
+        if(ApplicationSharedPreferences.getInstance(this).getFirstConnection()) {
+            addAccount();
+        }
 
     }
 
@@ -125,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
 
     @Override
     public void onTabSelected(int position) {
+
         switch (position) {
             case 0:
                 FragmentManager fm0 = getFragmentManager();
@@ -139,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
                 fm2.beginTransaction().replace(R.id.content_frame, HistoryFragment.newInstance()).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
                 break;
             default:
+
                 break;
         }
     }
