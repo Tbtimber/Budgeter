@@ -6,6 +6,7 @@ import android.util.Log;
 import com.timber.mdelpierre.budgeter.global.ApplicationSharedPreferences;
 import com.timber.mdelpierre.budgeter.model.Account;
 import com.timber.mdelpierre.budgeter.model.Login;
+import com.timber.mdelpierre.budgeter.model.Tag;
 import com.timber.mdelpierre.budgeter.model.Transaction;
 
 import java.util.List;
@@ -52,6 +53,7 @@ public class RealmHelper {
                     ac.name = accountName;
                     ac.id = ApplicationSharedPreferences.getInstance(context).getNbLogin();
                     logins.get(0).accounts.add(ac);
+                    ApplicationSharedPreferences.getInstance(context).setFirstConenction(false);
                 }
             }
         });
@@ -96,5 +98,35 @@ public class RealmHelper {
             }
         }
         return balance;
+    }
+
+    public static void addTagToRealm(final Context context, final String name) {
+        if(isTagUnique(name)) {
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    ApplicationSharedPreferences.getInstance(context).incrementNbLogin();
+                    Tag tg = realm.createObject(Tag.class);
+                    tg.id = ApplicationSharedPreferences.getInstance(context).getNbLogin();
+                    tg.name = name;
+                }
+            });
+        } else {
+            return;
+        }
+    }
+
+    private static boolean isTagUnique(String name) {
+        List<Tag> tags = realm.where(Tag.class).findAll();
+        for(Tag tg : tags) {
+            if(tg.name.equalsIgnoreCase(name)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static List<Tag> getTags() {
+        return realm.where(Tag.class).findAll();
     }
 }

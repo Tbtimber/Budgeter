@@ -34,4 +34,5 @@ dependencies {
     compile 'com.roughike:bottom-bar:1.3.9'
     compile 'com.github.PhilJay:MPAndroidChart:v2.2.5'
     compile 'io.realm:android-adapters:1.2.2'
+    compile 'org.apmem.tools:layouts:1.10@aar' //https://github.com/ApmeM/android-flowlayout
 }

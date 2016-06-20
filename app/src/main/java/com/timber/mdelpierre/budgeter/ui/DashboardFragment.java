@@ -64,7 +64,7 @@ public class DashboardFragment extends Fragment {
 
     @OnClick(R.id.bt_registerTransaction)
     void registerTransaction() {
-        try {
+        /*try {
             double trValue = Double.parseDouble(mEtTrValue.getText().toString());
             if(!mCbIsIncome.isChecked()) {
                 trValue *= -1;
@@ -73,7 +73,8 @@ public class DashboardFragment extends Fragment {
             RealmHelper.addTransactionToAccount(getActivity(), ApplicationSharedPreferences.getInstance(getActivity()).getCurrentLogin(),ApplicationSharedPreferences.getInstance(getActivity()).getCurrentAccount(), trValue);
         } catch (NumberFormatException e) {
             return;
-        }
-
+        }*/
+        DialogAddTransaction di = new DialogAddTransaction();
+        di.show(getFragmentManager(), "");
     }
 }

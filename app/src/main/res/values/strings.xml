@@ -15,4 +15,6 @@
 
     <string name="toast_login_invalid">Login invalid. Pleaser enter a login at least 2 character long.</string>
     <string name="add_account_name">Name</string>
+    <string name="add_transaction_value">Value</string>
+    <string name="euro_sign">€</string>
 </resources>
