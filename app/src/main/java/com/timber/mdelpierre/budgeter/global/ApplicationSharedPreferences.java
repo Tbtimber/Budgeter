@@ -15,6 +15,7 @@ public class ApplicationSharedPreferences {
     public static final String NB_LOGIN = "nbLogin";
     public static final String NB_ACCOUNT = "nbAccount";
     public static final String NB_TRANSACTION = "nbTransaction";
+    public static final String FIRST_CONNECTION = "hasAccount";
     // Private fields
     // ---------------------------------------------------------------------------------------------
     private static ApplicationSharedPreferences instance;
@@ -104,6 +105,15 @@ public class ApplicationSharedPreferences {
 
     public void incrementNbTransaction() {
         editor.putLong(NB_TRANSACTION, getNbTransaction() + 1);
+        editor.commit();
+    }
+
+    public boolean getFirstConnection() {
+        return applicationSharedPreferences.getBoolean(FIRST_CONNECTION, true);
+    }
+
+    public void setFirstConenction(boolean value) {
+        editor.putBoolean(FIRST_CONNECTION, value);
         editor.commit();
     }
 }

@@ -40,14 +40,16 @@ public class DialogAddAccount extends DialogFragment {
                 RealmHelper.addAccount(getActivity(),ApplicationSharedPreferences.getInstance(getActivity()).getCurrentLogin(),mEditText.getText().toString());
             }
         });
+        if(!ApplicationSharedPreferences.getInstance(getActivity()).getFirstConnection()) {
+            builder.setView(view).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
 
-        builder.setView(view).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-
+                }
+            });
+        } else {
+            setCancelable(false);
+        }
         return builder.create();
     }
 
