@@ -7,6 +7,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.timber.mdelpierre.budgeter.R;
+import com.timber.mdelpierre.budgeter.enumeration.TagEventTypeEnum;
+import com.timber.mdelpierre.budgeter.ui.eventBus.TagEvents;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by Matthieu on 20/06/2016.
@@ -21,15 +25,45 @@ public class TagUtil {
         tv.setText(name);
         tv.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
         tv.setAlpha(0.35f);
+        tv.setId(name.hashCode());
         return tv;
     }
 
-    public static View createSmallView(Context context) {
-        View v = new View(context);
+    public static TextView createEmptyTVForTag(Context context) {
+        TextView tv = new TextView(context);
         LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        v.setLayoutParams(llp);
-        v.requestLayout();
-        v.setMinimumWidth(5);
-        return v;
+        llp.setMargins(10,10,10,10);
+        tv.setLayoutParams(llp);
+        tv.requestLayout();
+        tv.setText(" ");
+        tv.setBackgroundColor(context.getResources().getColor(R.color.transparentwhite));
+        tv.setAlpha(0.0f);
+        return tv;
+    }
+
+    public static LinearLayout createLLforTag(Context context, String name) {
+        final LinearLayout ll = new LinearLayout(context);
+        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        ll.setLayoutParams(llp);
+        ll.setOrientation(LinearLayout.HORIZONTAL);
+        ll.addView(createTVForTag(context, name));
+        ll.addView(createEmptyTVForTag(context));
+        ll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post(new TagEvents(ll));
+            }
+        });
+        return ll;
+    }
+
+    public static void setTagLayouToNormal(LinearLayout ll) {
+        TextView tv = (TextView)ll.getChildAt(0);
+        tv.setAlpha(0.35f);
+    }
+
+    public static void setTagLayoutToSelect(LinearLayout ll) {
+        TextView tv = (TextView)ll.getChildAt(0);
+        tv.setAlpha(1.0f);
     }
 }

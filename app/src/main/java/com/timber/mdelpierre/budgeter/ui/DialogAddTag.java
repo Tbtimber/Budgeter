@@ -10,8 +10,12 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.timber.mdelpierre.budgeter.R;
+import com.timber.mdelpierre.budgeter.enumeration.TagEventTypeEnum;
 import com.timber.mdelpierre.budgeter.global.ApplicationSharedPreferences;
 import com.timber.mdelpierre.budgeter.persistance.RealmHelper;
+import com.timber.mdelpierre.budgeter.ui.eventBus.TagEvents;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,6 +41,7 @@ public class DialogAddTag extends DialogFragment{
             public void onClick(DialogInterface dialog, int which) {
                 ApplicationSharedPreferences.getInstance(getActivity()).setCurrentAccount(mEditText.getText().toString());
                 RealmHelper.addTagToRealm(getActivity(), mEditText.getText().toString());
+                EventBus.getDefault().post(new TagEvents(TagEventTypeEnum.TAG_ADDED_EVENT));
             }
         });
         if(!ApplicationSharedPreferences.getInstance(getActivity()).getFirstConnection()) {
@@ -51,4 +56,6 @@ public class DialogAddTag extends DialogFragment{
         }
         return builder.create();
     }
+
+
 }

@@ -3,11 +3,15 @@ package com.timber.mdelpierre.budgeter.persistance;
 import android.content.Context;
 import android.util.Log;
 
+import com.timber.mdelpierre.budgeter.enumeration.TagEventTypeEnum;
 import com.timber.mdelpierre.budgeter.global.ApplicationSharedPreferences;
 import com.timber.mdelpierre.budgeter.model.Account;
 import com.timber.mdelpierre.budgeter.model.Login;
 import com.timber.mdelpierre.budgeter.model.Tag;
 import com.timber.mdelpierre.budgeter.model.Transaction;
+import com.timber.mdelpierre.budgeter.ui.eventBus.TagEvents;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -120,6 +124,7 @@ public class RealmHelper {
         List<Tag> tags = realm.where(Tag.class).findAll();
         for(Tag tg : tags) {
             if(tg.name.equalsIgnoreCase(name)) {
+                EventBus.getDefault().post(new TagEvents(TagEventTypeEnum.ALREADY_EXISTS));
                 return false;
             }
         }
