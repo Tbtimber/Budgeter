@@ -69,15 +69,18 @@ public class RealmHelper {
         return logins.get(0).getAccounts();
     }
 
-    public static void addTransactionToAccount(final Context context, final String login, final String account, final double value) {
+    public static void addTransactionToAccount(final Context context, final String login, final String account, final double value, final String tagName) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 ApplicationSharedPreferences.getInstance(context).incrementNbLogin();
                 Transaction tr = realm.createObject(Transaction.class);
+
+                Tag tg = realm.where(Tag.class).equalTo("name", tagName).findFirst();
+
                 tr.id = ApplicationSharedPreferences.getInstance(context).getNbLogin();
                 tr.value = value;
-
+                tr.tag = tg;
                 Login lg = realm.where(Login.class).equalTo("login", login).findFirst();
                 for(Account ac:lg.getAccounts()) {
                     if(ac.name.equalsIgnoreCase(account)) {
@@ -87,6 +90,10 @@ public class RealmHelper {
                 }
             }
         });
+    }
+
+    public static void addTransactionToAccount(final Context context, final String login, final String account, final double value) {
+        addTransactionToAccount(context, login, account, value, "default");
     }
 
     public static void attachListener(RealmChangeListener listener) {

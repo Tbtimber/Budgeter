@@ -3,14 +3,18 @@ package com.timber.mdelpierre.budgeter.ui;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.timber.mdelpierre.budgeter.R;
 import com.timber.mdelpierre.budgeter.enumeration.TagEventTypeEnum;
+import com.timber.mdelpierre.budgeter.global.ApplicationSharedPreferences;
 import com.timber.mdelpierre.budgeter.model.Tag;
 import com.timber.mdelpierre.budgeter.persistance.RealmHelper;
 import com.timber.mdelpierre.budgeter.ui.eventBus.TagEvents;
@@ -33,6 +37,9 @@ import io.realm.RealmChangeListener;
  */
 public class DialogAddTransaction extends DialogFragment {
 
+    @Bind(R.id.transaction_value)
+    EditText mEtTransactionValue;
+
     @Bind(R.id.flow_tags)
     FlowLayout mFlowTags;
 
@@ -54,6 +61,24 @@ public class DialogAddTransaction extends DialogFragment {
 
         builder.setView(view);
 
+
+        builder.setView(view).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(mSelectedTag == null) {
+                    RealmHelper.addTransactionToAccount(getActivity(), ApplicationSharedPreferences.getInstance(getActivity()).getCurrentLogin(), ApplicationSharedPreferences.getInstance(getActivity()).getCurrentAccount(), Double.parseDouble(mEtTransactionValue.getText().toString()));
+                } else {
+                    RealmHelper.addTransactionToAccount(getActivity(), ApplicationSharedPreferences.getInstance(getActivity()).getCurrentLogin(), ApplicationSharedPreferences.getInstance(getActivity()).getCurrentAccount(), Double.parseDouble(mEtTransactionValue.getText().toString()), ((TextView) mSelectedTag.getChildAt(0)).getText().toString());
+                }
+            }
+        });
+
+        builder.setView(view).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
 
         return builder.create();
     }
@@ -102,11 +127,18 @@ public class DialogAddTransaction extends DialogFragment {
         } else if (event.getmType() == TagEventTypeEnum.ALREADY_EXISTS){
             Toast.makeText(getActivity(),getResources().getString(R.string.tag_already_exists), Toast.LENGTH_LONG).show();
         } else if (event.getmType() == TagEventTypeEnum.TAG_SELECTED) {
-            if(mSelectedTag != null) {
+
+            if(mSelectedTag == null) {
+                mSelectedTag = event.getmTagLl();
+                TagUtil.setTagLayoutToSelect(mSelectedTag);
+            } else if(event.getmTagLl().equals(mSelectedTag)) {
                 TagUtil.setTagLayouToNormal(mSelectedTag);
+                mSelectedTag = null;
+            } else {
+                TagUtil.setTagLayouToNormal(mSelectedTag);
+                mSelectedTag = event.getmTagLl();
+                TagUtil.setTagLayoutToSelect(mSelectedTag);
             }
-            mSelectedTag = event.getmTagLl();
-            TagUtil.setTagLayoutToSelect(mSelectedTag);
         }
 
     }
