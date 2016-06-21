@@ -14,13 +14,21 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.realm.implementation.RealmPieData;
+import com.github.mikephil.charting.data.realm.implementation.RealmPieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.timber.mdelpierre.budgeter.R;
+import com.timber.mdelpierre.budgeter.model.Transaction;
+import com.timber.mdelpierre.budgeter.model.TransactionGroup;
+import com.timber.mdelpierre.budgeter.persistance.RealmHelper;
+import com.timber.mdelpierre.budgeter.util.GraphUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.realm.RealmResults;
 
 /**
  * Created by Matthieu on 15/06/2016.
@@ -55,24 +63,19 @@ public class GraphFragment extends Fragment{
     }
 
     protected PieData generatePieData() {
+        ArrayList<Entry> entries1 = new ArrayList<>();
+        ArrayList<String> xVals = new ArrayList<>();
 
-        int count = 4;
+        List<TransactionGroup> transactionGroups = GraphUtil.getTransactionGroups(RealmHelper.getTransactionsForAccount(getActivity()).transactions);
 
-        ArrayList<Entry> entries1 = new ArrayList<Entry>();
-        ArrayList<String> xVals = new ArrayList<String>();
-
-        xVals.add("Quarter 1");
-        xVals.add("Quarter 2");
-        xVals.add("Quarter 3");
-        xVals.add("Quarter 4");
-
-        for(int i = 0; i < count; i++) {
-            xVals.add("entry" + (i+1));
-
-            entries1.add(new Entry((float) (Math.random() * 60) + 40, i));
+        int i=0;
+        for(TransactionGroup tg : transactionGroups) {
+            xVals.add(tg.getTagName());
+            entries1.add(new Entry((float)tg.getValue(), i));
+            i++;
         }
 
-        PieDataSet ds1 = new PieDataSet(entries1, "Quarterly Revenues 2015");
+        PieDataSet ds1 = new PieDataSet(entries1, "THUNE !");
         ds1.setColors(ColorTemplate.VORDIPLOM_COLORS);
         ds1.setSliceSpace(2f);
         ds1.setValueTextColor(Color.WHITE);
