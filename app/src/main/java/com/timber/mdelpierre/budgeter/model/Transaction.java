@@ -4,6 +4,7 @@ import java.util.Date;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 
 /**
  * Created by Matthieu on 16/06/2016.
@@ -11,8 +12,11 @@ import io.realm.annotations.PrimaryKey;
 public class Transaction extends RealmObject {
     @PrimaryKey
     public long id;
+
     public Date date;
+
     public double value;
+
     public Tag tag;
 
     public Transaction() {

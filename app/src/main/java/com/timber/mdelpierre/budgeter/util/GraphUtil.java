@@ -20,10 +20,13 @@ public class GraphUtil {
                 return transactionGroups;
             }
             int indice = findTagIndice(transactionGroups, tr.tag.name);
+            if(tr.value > 0) {
+                continue;
+            }
             if(indice == transactionGroups.size()) {
-                transactionGroups.add(new TransactionGroup(tr.tag.name, tr.value));
+                transactionGroups.add(new TransactionGroup(tr.tag.name, -tr.value));
             } else {
-                transactionGroups.get(indice).addToTotal(tr.value);
+                transactionGroups.get(indice).addToTotal(-tr.value);
             }
         }
         return transactionGroups;

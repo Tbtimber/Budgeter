@@ -35,4 +35,5 @@ dependencies {
     compile 'com.github.PhilJay:MPAndroidChart:v2.2.5'
     compile 'io.realm:android-adapters:1.2.2'
     compile 'org.apmem.tools:layouts:1.10@aar' //https://github.com/ApmeM/android-flowlayout
+    compile 'joda-time:joda-time:2.9.3'
 }

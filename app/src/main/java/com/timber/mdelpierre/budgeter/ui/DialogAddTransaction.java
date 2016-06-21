@@ -65,10 +65,15 @@ public class DialogAddTransaction extends DialogFragment {
         builder.setView(view).setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                try {
+                    Double.parseDouble(mEtTransactionValue.getText().toString());
+                } catch (Exception e) {
+                    return;
+                }
                 if(mSelectedTag == null) {
-                    RealmHelper.addTransactionToAccount(getActivity(), ApplicationSharedPreferences.getInstance(getActivity()).getCurrentLogin(), ApplicationSharedPreferences.getInstance(getActivity()).getCurrentAccount(), Double.parseDouble(mEtTransactionValue.getText().toString()));
+                    RealmHelper.addTransactionToAccount(getActivity(), ApplicationSharedPreferences.getInstance(getActivity()).getCurrentLogin(), ApplicationSharedPreferences.getInstance(getActivity()).getCurrentAccount(), -1*Double.parseDouble(mEtTransactionValue.getText().toString()));
                 } else {
-                    RealmHelper.addTransactionToAccount(getActivity(), ApplicationSharedPreferences.getInstance(getActivity()).getCurrentLogin(), ApplicationSharedPreferences.getInstance(getActivity()).getCurrentAccount(), Double.parseDouble(mEtTransactionValue.getText().toString()), ((TextView) mSelectedTag.getChildAt(0)).getText().toString());
+                    RealmHelper.addTransactionToAccount(getActivity(), ApplicationSharedPreferences.getInstance(getActivity()).getCurrentLogin(), ApplicationSharedPreferences.getInstance(getActivity()).getCurrentAccount(), -1*Double.parseDouble(mEtTransactionValue.getText().toString()), ((TextView) mSelectedTag.getChildAt(0)).getText().toString());
                 }
             }
         });

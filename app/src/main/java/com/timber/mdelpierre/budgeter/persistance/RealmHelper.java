@@ -13,6 +13,9 @@ import com.timber.mdelpierre.budgeter.ui.eventBus.TagEvents;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import io.realm.OrderedRealmCollection;
@@ -75,6 +78,7 @@ public class RealmHelper {
             public void execute(Realm realm) {
                 ApplicationSharedPreferences.getInstance(context).incrementNbLogin();
                 Transaction tr = realm.createObject(Transaction.class);
+
                 tr.id = ApplicationSharedPreferences.getInstance(context).getNbLogin();
                 tr.value = value;
 
@@ -84,11 +88,22 @@ public class RealmHelper {
                 }
 
                 tr.tag = tg;
+
+                final Date now = new Date(System.currentTimeMillis());
+
+                tr.date = now;
+
                 Login lg = realm.where(Login.class).equalTo("login", login).findFirst();
                 for(Account ac:lg.getAccounts()) {
                     if(ac.name.equalsIgnoreCase(account)) {
                         ac.transactions.add(tr);
                         ac.accountBalance = ac.transactions.sum("value").doubleValue();
+                        Collections.sort(ac.transactions, new Comparator<Transaction>() {
+                            @Override
+                            public int compare(Transaction lhs, Transaction rhs) {
+                                return -lhs.date.compareTo(rhs.date);
+                            }
+                        });
                     }
                 }
             }
@@ -118,6 +133,7 @@ public class RealmHelper {
         }
         return balance;
     }
+
     public static void addTagToRealmNoTransaction(final Context context, final String name) {
         if(isTagUnique(name)) {
             ApplicationSharedPreferences.getInstance(context).incrementNbLogin();
