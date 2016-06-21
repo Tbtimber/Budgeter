@@ -75,11 +75,14 @@ public class RealmHelper {
             public void execute(Realm realm) {
                 ApplicationSharedPreferences.getInstance(context).incrementNbLogin();
                 Transaction tr = realm.createObject(Transaction.class);
-
-                Tag tg = realm.where(Tag.class).equalTo("name", tagName).findFirst();
-
                 tr.id = ApplicationSharedPreferences.getInstance(context).getNbLogin();
                 tr.value = value;
+
+                Tag tg = realm.where(Tag.class).equalTo("name", tagName).findFirst();
+                if(tg == null) {
+                    addTagToRealmNoTransaction(context, tagName);
+                }
+
                 tr.tag = tg;
                 Login lg = realm.where(Login.class).equalTo("login", login).findFirst();
                 for(Account ac:lg.getAccounts()) {
@@ -96,6 +99,11 @@ public class RealmHelper {
         addTransactionToAccount(context, login, account, value, "default");
     }
 
+    public static Account getTransactionsForAccount(final Context context) {
+        return realm.where(Login.class).equalTo("login", ApplicationSharedPreferences.getInstance(context).getCurrentLogin()).findFirst()
+                .accounts.where().equalTo("name", ApplicationSharedPreferences.getInstance(context).getCurrentAccount()).findFirst();
+    }
+
     public static void attachListener(RealmChangeListener listener) {
         realm.addChangeListener(listener);
     }
@@ -109,6 +117,14 @@ public class RealmHelper {
             }
         }
         return balance;
+    }
+    public static void addTagToRealmNoTransaction(final Context context, final String name) {
+        if(isTagUnique(name)) {
+            ApplicationSharedPreferences.getInstance(context).incrementNbLogin();
+            Tag tg = realm.createObject(Tag.class);
+            tg.id = ApplicationSharedPreferences.getInstance(context).getNbLogin();
+            tg.name = name;
+        }
     }
 
     public static void addTagToRealm(final Context context, final String name) {
