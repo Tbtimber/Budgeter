@@ -3,10 +3,15 @@ package com.timber.mdelpierre.budgeter.persistance;
 import android.content.Context;
 import android.util.Log;
 
+import com.timber.mdelpierre.budgeter.enumeration.TagEventTypeEnum;
 import com.timber.mdelpierre.budgeter.global.ApplicationSharedPreferences;
 import com.timber.mdelpierre.budgeter.model.Account;
 import com.timber.mdelpierre.budgeter.model.Login;
+import com.timber.mdelpierre.budgeter.model.Tag;
 import com.timber.mdelpierre.budgeter.model.Transaction;
+import com.timber.mdelpierre.budgeter.ui.eventBus.TagEvents;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -52,6 +57,7 @@ public class RealmHelper {
                     ac.name = accountName;
                     ac.id = ApplicationSharedPreferences.getInstance(context).getNbLogin();
                     logins.get(0).accounts.add(ac);
+                    ApplicationSharedPreferences.getInstance(context).setFirstConenction(false);
                 }
             }
         });
@@ -63,15 +69,18 @@ public class RealmHelper {
         return logins.get(0).getAccounts();
     }
 
-    public static void addTransactionToAccount(final Context context, final String login, final String account, final double value) {
+    public static void addTransactionToAccount(final Context context, final String login, final String account, final double value, final String tagName) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 ApplicationSharedPreferences.getInstance(context).incrementNbLogin();
                 Transaction tr = realm.createObject(Transaction.class);
+
+                Tag tg = realm.where(Tag.class).equalTo("name", tagName).findFirst();
+
                 tr.id = ApplicationSharedPreferences.getInstance(context).getNbLogin();
                 tr.value = value;
-
+                tr.tag = tg;
                 Login lg = realm.where(Login.class).equalTo("login", login).findFirst();
                 for(Account ac:lg.getAccounts()) {
                     if(ac.name.equalsIgnoreCase(account)) {
@@ -81,6 +90,10 @@ public class RealmHelper {
                 }
             }
         });
+    }
+
+    public static void addTransactionToAccount(final Context context, final String login, final String account, final double value) {
+        addTransactionToAccount(context, login, account, value, "default");
     }
 
     public static void attachListener(RealmChangeListener listener) {
@@ -96,5 +109,36 @@ public class RealmHelper {
             }
         }
         return balance;
+    }
+
+    public static void addTagToRealm(final Context context, final String name) {
+        if(isTagUnique(name)) {
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    ApplicationSharedPreferences.getInstance(context).incrementNbLogin();
+                    Tag tg = realm.createObject(Tag.class);
+                    tg.id = ApplicationSharedPreferences.getInstance(context).getNbLogin();
+                    tg.name = name;
+                }
+            });
+        } else {
+            return;
+        }
+    }
+
+    private static boolean isTagUnique(String name) {
+        List<Tag> tags = realm.where(Tag.class).findAll();
+        for(Tag tg : tags) {
+            if(tg.name.equalsIgnoreCase(name)) {
+                EventBus.getDefault().post(new TagEvents(TagEventTypeEnum.ALREADY_EXISTS));
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static List<Tag> getTags() {
+        return realm.where(Tag.class).findAll();
     }
 }

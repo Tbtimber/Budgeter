@@ -13,12 +13,12 @@ public class Transaction extends RealmObject {
     public long id;
     public Date date;
     public double value;
-    public String tag;
+    public Tag tag;
 
     public Transaction() {
     }
 
-    public Transaction(Date date, double value, String tag) {
+    public Transaction(Date date, double value, Tag tag) {
         this.date = date;
         this.value = value;
         this.tag = tag;
