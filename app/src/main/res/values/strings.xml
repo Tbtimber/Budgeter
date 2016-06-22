@@ -19,4 +19,8 @@
     <string name="euro_sign">€</string>
 
     <string name="tag_already_exists">Tag already exists, please choose another one</string>
+
+    <string name="toast_wrong_login">Wrong info !</string>
+    <string name="toast_error_creating_account">Error occurred while creating account</string>
+    <string name="toast_error_adding_transaction">Error occurred while addind the transaction</string>
 </resources>

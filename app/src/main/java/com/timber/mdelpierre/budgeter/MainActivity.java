@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
 
         //Setup Drawer Layout
         setSupportActionBar(mToolbar);
-        mNavAdapter = new NavDrawerAdapter(RealmHelper.getAccountsForLogin(ApplicationSharedPreferences.getInstance(this).getCurrentLogin()),this);
+        mNavAdapter = new NavDrawerAdapter(RealmHelper.getAccounts(this) ,this);
 
 
         mDrawerList.setAdapter(mNavAdapter);

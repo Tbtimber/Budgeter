@@ -44,9 +44,12 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             ApplicationSharedPreferences.getInstance(this).setIsConnected(true);
             ApplicationSharedPreferences.getInstance(this).setCurrentLogin(mEtLogin.getText().toString());
-            RealmHelper.addLogin(this,mEtLogin.getText().toString());
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            finish();
+            if(RealmHelper.addLoginToRealm(this,mEtLogin.getText().toString())) {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finish();
+            } else {
+                Toast.makeText(this,getResources().getString(R.string.toast_wrong_login), Toast.LENGTH_LONG).show();
+            }
         }
     }
 

@@ -66,7 +66,7 @@ public class GraphFragment extends Fragment{
         ArrayList<Entry> entries1 = new ArrayList<>();
         ArrayList<String> xVals = new ArrayList<>();
 
-        List<TransactionGroup> transactionGroups = GraphUtil.getTransactionGroups(RealmHelper.getTransactionsForAccount(getActivity()).transactions);
+        List<TransactionGroup> transactionGroups = GraphUtil.getTransactionGroups(RealmHelper.getTransactionsOfAccount(getActivity()));
 
         int i=0;
         for(TransactionGroup tg : transactionGroups) {

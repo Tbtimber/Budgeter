@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.getkeepsafe.relinker.ApkLibraryInstaller;
 import com.timber.mdelpierre.budgeter.R;
 import com.timber.mdelpierre.budgeter.global.ApplicationSharedPreferences;
 import com.timber.mdelpierre.budgeter.persistance.RealmHelper;
@@ -37,7 +39,9 @@ public class DialogAddAccount extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 ApplicationSharedPreferences.getInstance(getActivity()).setCurrentAccount(mEditText.getText().toString());
-                RealmHelper.addAccount(getActivity(),ApplicationSharedPreferences.getInstance(getActivity()).getCurrentLogin(),mEditText.getText().toString());
+                if(!RealmHelper.addAccountToRealm(getActivity(), mEditText.getText().toString())) {
+                    Toast.makeText(getActivity(),getResources().getString(R.string.toast_error_creating_account), Toast.LENGTH_LONG).show();
+                }
             }
         });
         if(!ApplicationSharedPreferences.getInstance(getActivity()).getFirstConnection()) {
