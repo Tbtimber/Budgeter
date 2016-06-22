@@ -28,7 +28,15 @@
             android:layout_marginRight="5dp"
             android:inputType="numberDecimal"
             android:hint="@string/add_transaction_value"/>
+
     </RelativeLayout>
+    <CheckBox
+        android:id="@+id/cb_isIncome_addTransaction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/is_income"
+        android:layout_marginLeft="10dp"
+        />
 
     <include layout="@layout/tag_flow_layout"
         android:id="@+id/flow_tags"/>

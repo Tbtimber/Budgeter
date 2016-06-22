@@ -184,7 +184,9 @@ public class RealmHelper {
                     tr.tag = transaction.tag;
                     tr.value = transaction.value;
 
-                    getCurrentAccount(context).transactions.add(tr);
+                    Account currentAccount = getCurrentAccount(context);
+                    currentAccount.transactions.add(tr);
+                    currentAccount.accountBalance = (double)currentAccount.transactions.sum("value");
                 }
             });
         }
