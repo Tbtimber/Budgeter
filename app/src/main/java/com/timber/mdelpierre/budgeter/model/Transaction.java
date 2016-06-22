@@ -10,7 +10,7 @@ import io.realm.annotations.Required;
  * Created by Matthieu on 16/06/2016.
  */
 public class Transaction extends RealmObject {
-    @PrimaryKey
+//    @PrimaryKey
     public long id;
 
     public Date date;

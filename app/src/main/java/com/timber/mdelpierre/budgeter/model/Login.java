@@ -3,16 +3,18 @@ package com.timber.mdelpierre.budgeter.model;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 
 /**
  * Created by Matthieu on 16/06/2016.
  */
 public class Login extends RealmObject {
-    @PrimaryKey
+//    @PrimaryKey
     public long id;
+    @Required
     public String login;
     public RealmList<Account> accounts;
-    public int nbAccount;
+
 
     public Login() {
     }

@@ -48,6 +48,8 @@ public class GraphFragment extends Fragment{
         View v = inflater.inflate(R.layout.fragment_graphs, container, false);
 
         ButterKnife.bind(this, v);
+        RealmHelper.initRealm(getActivity());
+
 
         mPieChart.setDescription("");
 
@@ -66,7 +68,7 @@ public class GraphFragment extends Fragment{
         ArrayList<Entry> entries1 = new ArrayList<>();
         ArrayList<String> xVals = new ArrayList<>();
 
-        List<TransactionGroup> transactionGroups = GraphUtil.getTransactionGroups(RealmHelper.getTransactionsForAccount(getActivity()).transactions);
+        List<TransactionGroup> transactionGroups = GraphUtil.getTransactionGroups(RealmHelper.getTransactionsOfAccount(getActivity()));
 
         int i=0;
         for(TransactionGroup tg : transactionGroups) {
@@ -76,7 +78,7 @@ public class GraphFragment extends Fragment{
         }
 
         PieDataSet ds1 = new PieDataSet(entries1, "THUNE !");
-        ds1.setColors(ColorTemplate.VORDIPLOM_COLORS);
+        ds1.setColors(ColorTemplate.MATERIAL_COLORS);
         ds1.setSliceSpace(2f);
         ds1.setValueTextColor(Color.WHITE);
         ds1.setValueTextSize(12f);

@@ -39,7 +39,7 @@ public class HistoryFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_history, container, false);
 
         ButterKnife.bind(this, v);
-        List<Transaction> transactions = RealmHelper.getTransactionsForAccount(getActivity()).transactions;
+        List<Transaction> transactions = RealmHelper.getTransactionsOfAccount(getActivity());
 
         mLlHistory.setAdapter(new HistoryListAdapter(transactions, getActivity()));
 

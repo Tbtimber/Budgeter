@@ -49,12 +49,12 @@ public class DashboardFragment extends Fragment {
 
         ButterKnife.bind(this, v);
         mTvDashboard.setText(ApplicationSharedPreferences.getInstance(getActivity()).getCurrentAccount());
-        mTbShowBalance.setText("Current Balance : " + RealmHelper.getBalanceForAccount(ApplicationSharedPreferences.getInstance(getActivity()).getCurrentLogin(), ApplicationSharedPreferences.getInstance(getActivity()).getCurrentAccount()));
+//        mTbShowBalance.setText("Current Balance : " + RealmHelper.getBalanceOfAccount(getActivity()));
 
         RealmHelper.attachListener(new RealmChangeListener() {
             @Override
             public void onChange(Object element) {
-                mTbShowBalance.setText("Current Balance : " + RealmHelper.getBalanceForAccount(ApplicationSharedPreferences.getInstance(getActivity()).getCurrentLogin(), ApplicationSharedPreferences.getInstance(getActivity()).getCurrentAccount()));
+                //mTbShowBalance.setText("Current Balance : " + RealmHelper.getBalanceOfAccount(getActivity()));
             }
         });
 

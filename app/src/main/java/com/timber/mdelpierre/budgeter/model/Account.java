@@ -9,7 +9,7 @@ import io.realm.annotations.PrimaryKey;
  * Created by Matthieu on 16/06/2016.
  */
 public class Account extends RealmObject {
-    @PrimaryKey
+   // @PrimaryKey
     public long id;
     public RealmList<Transaction> transactions;
     public String name;

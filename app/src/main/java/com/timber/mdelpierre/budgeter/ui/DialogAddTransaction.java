@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -25,6 +26,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -70,10 +72,17 @@ public class DialogAddTransaction extends DialogFragment {
                 } catch (Exception e) {
                     return;
                 }
+                boolean realmBool;
                 if(mSelectedTag == null) {
-                    RealmHelper.addTransactionToAccount(getActivity(), ApplicationSharedPreferences.getInstance(getActivity()).getCurrentLogin(), ApplicationSharedPreferences.getInstance(getActivity()).getCurrentAccount(), -1*Double.parseDouble(mEtTransactionValue.getText().toString()));
+                    realmBool = RealmHelper.addTransactionToRealm(getActivity(), new Date(System.currentTimeMillis()),
+                            -1*Double.parseDouble(mEtTransactionValue.getText().toString()), "others");
                 } else {
-                    RealmHelper.addTransactionToAccount(getActivity(), ApplicationSharedPreferences.getInstance(getActivity()).getCurrentLogin(), ApplicationSharedPreferences.getInstance(getActivity()).getCurrentAccount(), -1*Double.parseDouble(mEtTransactionValue.getText().toString()), ((TextView) mSelectedTag.getChildAt(0)).getText().toString());
+                    realmBool = RealmHelper.addTransactionToRealm(getActivity(), new Date(System.currentTimeMillis()),
+                            -1*Double.parseDouble(mEtTransactionValue.getText().toString()),
+                            ((TextView) mSelectedTag.getChildAt(0)).getText().toString());
+                }
+                if(!realmBool) {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.toast_error_adding_transaction), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -96,7 +105,7 @@ public class DialogAddTransaction extends DialogFragment {
     }
 
     private void populateFlowLayout() {
-        List<Tag> tags = RealmHelper.getTags();
+        List<Tag> tags = RealmHelper.getTagsFromRealm(getActivity());
         mEtTagList = new ArrayList<>();
         int i=0;
         for(Tag tg: tags) {
