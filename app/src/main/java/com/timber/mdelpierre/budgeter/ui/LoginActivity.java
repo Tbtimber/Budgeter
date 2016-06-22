@@ -64,6 +64,9 @@ public class LoginActivity extends AppCompatActivity {
         if(event.getType() == LoginEventEnum.LOGGED){
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();
+        } else if (event.getType() == LoginEventEnum.FIRST_LOGING) {
+            startActivity(new Intent(getApplicationContext(), FirstLogActivity.class));
+            finish();
         }
     }
 

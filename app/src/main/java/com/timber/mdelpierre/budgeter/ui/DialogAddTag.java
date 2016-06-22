@@ -39,7 +39,6 @@ public class DialogAddTag extends DialogFragment{
         builder.setView(view).setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                ApplicationSharedPreferences.getInstance(getActivity()).setCurrentAccount(mEditText.getText().toString());
                 RealmHelper.addTagToRealm(getActivity(), mEditText.getText().toString());
                 EventBus.getDefault().post(new TagEvents(TagEventTypeEnum.TAG_ADDED_EVENT));
             }

@@ -66,47 +66,6 @@ public class ApplicationSharedPreferences {
         editor.putBoolean(IS_CONNECTED, value);
     }
 
-    public int getNbAccount() {
-        return applicationSharedPreferences.getInt(NB_ACCOUNT, -1);
-    }
-
-    public void setNbAccount(int value) {
-        editor.putInt(NB_ACCOUNT, value);
-        editor.commit();
-    }
-
-    public int getNbLogin() {
-        return applicationSharedPreferences.getInt(NB_LOGIN, -1);
-    }
-
-    public void setNbLogin(int value) {
-        editor.putInt(NB_LOGIN, value);
-        editor.commit();
-    }
-
-    public void incrementNbLogin() {
-        editor.putInt(NB_LOGIN, getNbLogin() + 1);
-        editor.commit();
-    }
-
-    public void incrementNbAccount() {
-        editor.putInt(NB_ACCOUNT, getNbAccount() + 1);
-        editor.commit();
-    }
-
-    public long getNbTransaction() {
-        return applicationSharedPreferences.getLong(NB_TRANSACTION, -1);
-    }
-
-    public void setNbTransaction(long value) {
-        editor.putLong(NB_TRANSACTION, value);
-        editor.commit();
-    }
-
-    public void incrementNbTransaction() {
-        editor.putLong(NB_TRANSACTION, getNbTransaction() + 1);
-        editor.commit();
-    }
 
     public boolean getFirstConnection() {
         return applicationSharedPreferences.getBoolean(FIRST_CONNECTION, true);

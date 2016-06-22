@@ -105,18 +105,23 @@ public class RealmHelper {
     }
 
     private static boolean addLoginToRealm(final Context context, final Login login) {
-        if(login == null || login.login == null || isInRealm(context, login)) {
+        if(login == null || login.login == null) {
             return false;
-        } else {
-            realm.executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-                    Login log = realm.createObject(Login.class);
-                    log.login = login.login;
-                }
-            });
         }
-        EventBus.getDefault().post(new LoginEvent(LoginEventEnum.LOGGED));
+        boolean isInRealm = isInRealm(context, login);
+
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Login log = realm.createObject(Login.class);
+                log.login = login.login;
+            }
+        });
+        if(isInRealm) {
+            EventBus.getDefault().post(new LoginEvent(LoginEventEnum.LOGGED));
+        } else {
+            EventBus.getDefault().post(new LoginEvent(LoginEventEnum.FIRST_LOGING));
+        }
         return true;
 
     }
@@ -141,13 +146,13 @@ public class RealmHelper {
                     ac.name = account.name;
                     ac.accountBalance = 0;
 
-                    Transaction tr = realm.createObject(Transaction.class);
+                    /*Transaction tr = realm.createObject(Transaction.class);
                     tr.value = 0;
                     Tag tg = realm.createObject(Tag.class);
                     tg.name = " ";
                     tr.tag = tg;
 
-                    ac.transactions.add(tr);
+                    ac.transactions.add(tr);*/
                     getCurrentLogin(context).accounts.add(ac);
                 }
             });
