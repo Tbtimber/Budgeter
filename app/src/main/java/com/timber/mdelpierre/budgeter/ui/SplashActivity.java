@@ -20,7 +20,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        verifiyPref();
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -35,17 +35,5 @@ public class SplashActivity extends AppCompatActivity {
             }
         }, SPLASHSCREEN_DELAY);
 
-    }
-
-    public void verifiyPref() {
-        if(ApplicationSharedPreferences.getInstance(this).getNbAccount() == -1) {
-            ApplicationSharedPreferences.getInstance(this).setNbAccount(0);
-        }
-        if(ApplicationSharedPreferences.getInstance(this).getNbLogin() == -1) {
-            ApplicationSharedPreferences.getInstance(this).setNbLogin(0);
-        }
-        if(ApplicationSharedPreferences.getInstance(this).getNbLogin() == -1) {
-            ApplicationSharedPreferences.getInstance(this).setNbTransaction(0);
-        }
     }
 }

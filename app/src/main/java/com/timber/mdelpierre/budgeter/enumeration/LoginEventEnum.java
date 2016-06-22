@@ -5,5 +5,5 @@ package com.timber.mdelpierre.budgeter.enumeration;
  */
 public enum LoginEventEnum {
     LOGGED,
-    WRONG
+    FIRST_LOGING
 }

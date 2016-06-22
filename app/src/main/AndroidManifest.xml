@@ -19,8 +19,11 @@
 
         <activity android:name=".ui.LoginActivity" android:screenOrientation="portrait" />
 
+        <activity android:name=".ui.FirstLogActivity" android:screenOrientation="portrait" />
+
         <activity android:name=".MainActivity" android:screenOrientation="portrait" />
-        
+
+
         <receiver android:name=".provider.BudgeterWidgetProvider" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

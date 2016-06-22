@@ -113,9 +113,6 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
         mDrawerToggle.syncState();
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.addDrawerListener(mDrawerToggle);
-        if(ApplicationSharedPreferences.getInstance(this).getFirstConnection()) {
-            //addAccount();
-        }
 
     }
 
