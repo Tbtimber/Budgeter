@@ -10,8 +10,13 @@ import android.widget.Toast;
 
 import com.timber.mdelpierre.budgeter.MainActivity;
 import com.timber.mdelpierre.budgeter.R;
+import com.timber.mdelpierre.budgeter.enumeration.LoginEventEnum;
 import com.timber.mdelpierre.budgeter.global.ApplicationSharedPreferences;
 import com.timber.mdelpierre.budgeter.persistance.RealmHelper;
+import com.timber.mdelpierre.budgeter.ui.eventBus.LoginEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -33,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         RealmHelper.initRealm(this);
 
+        EventBus.getDefault().register(this);
 
     }
 
@@ -45,13 +51,20 @@ public class LoginActivity extends AppCompatActivity {
             ApplicationSharedPreferences.getInstance(this).setIsConnected(true);
             ApplicationSharedPreferences.getInstance(this).setCurrentLogin(mEtLogin.getText().toString());
             if(RealmHelper.addLoginToRealm(this,mEtLogin.getText().toString())) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                finish();
+                //startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                //finish();
             } else {
                 Toast.makeText(this,getResources().getString(R.string.toast_wrong_login), Toast.LENGTH_LONG).show();
             }
         }
     }
 
+    @Subscribe
+    public void onEvent(LoginEvent event) {
+        if(event.getType() == LoginEventEnum.LOGGED){
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            finish();
+        }
+    }
 
 }

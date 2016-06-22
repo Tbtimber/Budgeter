@@ -3,12 +3,14 @@ package com.timber.mdelpierre.budgeter.persistance;
 import android.content.Context;
 import android.util.Log;
 
+import com.timber.mdelpierre.budgeter.enumeration.LoginEventEnum;
 import com.timber.mdelpierre.budgeter.enumeration.TagEventTypeEnum;
 import com.timber.mdelpierre.budgeter.global.ApplicationSharedPreferences;
 import com.timber.mdelpierre.budgeter.model.Account;
 import com.timber.mdelpierre.budgeter.model.Login;
 import com.timber.mdelpierre.budgeter.model.Tag;
 import com.timber.mdelpierre.budgeter.model.Transaction;
+import com.timber.mdelpierre.budgeter.ui.eventBus.LoginEvent;
 import com.timber.mdelpierre.budgeter.ui.eventBus.TagEvents;
 
 import org.greenrobot.eventbus.EventBus;
@@ -114,6 +116,7 @@ public class RealmHelper {
                 }
             });
         }
+        EventBus.getDefault().post(new LoginEvent(LoginEventEnum.LOGGED));
         return true;
 
     }
@@ -138,6 +141,13 @@ public class RealmHelper {
                     ac.name = account.name;
                     ac.accountBalance = 0;
 
+                    Transaction tr = realm.createObject(Transaction.class);
+                    tr.value = 0;
+                    Tag tg = realm.createObject(Tag.class);
+                    tg.name = " ";
+                    tr.tag = tg;
+
+                    ac.transactions.add(tr);
                     getCurrentLogin(context).accounts.add(ac);
                 }
             });

@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         if(ApplicationSharedPreferences.getInstance(this).getFirstConnection()) {
-            addAccount();
+            //addAccount();
         }
 
     }
@@ -172,12 +172,8 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Account ac = (Account)mNavAdapter.getItem(position);
-            if(ac.name.equalsIgnoreCase(ApplicationSharedPreferences.getInstance(getApplicationContext()).getCurrentAccount())) {
-                return;
-            } else {
-                ApplicationSharedPreferences.getInstance(getApplicationContext()).setCurrentAccount(ac.name);
-                onTabSelected(mBottomNav.getCurrentTabPosition());
-            }
+            ApplicationSharedPreferences.getInstance(getApplicationContext()).setCurrentAccount(ac.name);
+            onTabSelected(mBottomNav.getCurrentTabPosition());
             mDrawerLayout.closeDrawers();
         }
     };
