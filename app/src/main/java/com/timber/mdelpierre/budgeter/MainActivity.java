@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabClickListener;
+import com.timber.mdelpierre.budgeter.enumeration.AccountEventTypeEnum;
 import com.timber.mdelpierre.budgeter.global.ApplicationSharedPreferences;
 import com.timber.mdelpierre.budgeter.model.Account;
 import com.timber.mdelpierre.budgeter.model.Transaction;
@@ -36,7 +37,10 @@ import com.timber.mdelpierre.budgeter.ui.GraphFragment;
 import com.timber.mdelpierre.budgeter.ui.HistoryFragment;
 import com.timber.mdelpierre.budgeter.ui.LoginActivity;
 import com.timber.mdelpierre.budgeter.ui.adapter.NavDrawerAdapter;
+import com.timber.mdelpierre.budgeter.ui.eventBus.AccountEvent;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -81,6 +85,8 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         RealmHelper.initRealm(this);
+        EventBus.getDefault().register(this);
+
 
         mTvHeaderName.setText(ApplicationSharedPreferences.getInstance(this).getCurrentLogin());
 
@@ -114,6 +120,12 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.addDrawerListener(mDrawerToggle);
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -174,4 +186,13 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
             mDrawerLayout.closeDrawers();
         }
     };
+
+
+    @Subscribe
+    public void onEvent(AccountEvent event) {
+        if(event.getType() == AccountEventTypeEnum.ACCOUNT_ADDED) {
+            onTabSelected(mBottomNav.getCurrentTabPosition());
+            mDrawerLayout.closeDrawers();
+        }
+    }
 }
