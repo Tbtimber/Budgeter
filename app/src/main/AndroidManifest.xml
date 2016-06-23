@@ -8,13 +8,30 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+
+        <activity android:name=".ui.SplashActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".ui.LoginActivity" android:screenOrientation="portrait" />
+
+        <activity android:name=".ui.FirstLogActivity" android:screenOrientation="portrait" />
+
+        <activity android:name=".MainActivity" android:screenOrientation="portrait" />
+
+
+        <receiver android:name=".provider.BudgeterWidgetProvider" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/widget" />
+        </receiver>
+        
     </application>
 
 </manifest>

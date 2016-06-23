@@ -1,3 +1,28 @@
 <resources>
     <string name="app_name">Budgeter</string>
+    <string name="drawer_open">Drawer Open</string>
+    <string name="drawer_closed">Drawer Closed</string>
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_graphs">Graphs</string>
+    <string name="nav_history">Historic</string>
+
+    <string name="disconnect_drawer">Disconnect</string>
+
+    <string name="login_hint">Login</string>
+    <string name="password_hint">Password</string>
+    <string name="login_button">Submit</string>
+    <string name="add_account">Add new account</string>
+
+    <string name="toast_login_invalid">Login invalid. Pleaser enter a login at least 2 character long.</string>
+    <string name="add_account_name">Name</string>
+    <string name="add_transaction_value">Value</string>
+    <string name="euro_sign">€</string>
+
+    <string name="tag_already_exists">Tag already exists, please choose another one</string>
+
+    <string name="toast_wrong_login">Wrong info !</string>
+    <string name="toast_error_creating_account">Error occurred while creating account</string>
+    <string name="toast_error_adding_transaction">Error occurred while addind the transaction</string>
+
+    <string name="is_income">Is income</string>
 </resources>

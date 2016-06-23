@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerInParent="true"
+    >
+
+    <TableRow
+        android:layout_weight="1">
+        <RelativeLayout
+            android:id="@+id/ll_dash_name"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.70">
+            <TextView
+                android:id="@+id/tv_dash_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:textColor="@color/colorPrimary"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/ll_dash_balance"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/tv_dash_balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:textColor="@color/colorPrimary"/>
+        </RelativeLayout>
+    </TableRow>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@drawable/dashboard_line_separator" />
+
+    <TableRow
+        android:id="@+id/tr_dash_2"
+        android:layout_weight="1">
+        <RelativeLayout
+            android:id="@+id/ll_dash_day_spending"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.70"
+            >
+            <TextView
+                android:id="@+id/tv_dash_day_spending"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:textColor="@color/colorPrimary"/>
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/ll_dash_top_tag"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <TextView
+                android:id="@+id/tv_dash_top_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:textColor="@color/colorPrimary"/>
+        </RelativeLayout>
+    </TableRow>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@drawable/dashboard_line_separator" />
+
+    <TableRow
+        android:layout_weight="1">
+        <LinearLayout
+            android:id="@+id/ll_dash_add_transaction"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            >
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chart_dashoard"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+            </com.github.mikephil.charting.charts.LineChart>
+        </LinearLayout>
+    </TableRow>
+</TableLayout>
