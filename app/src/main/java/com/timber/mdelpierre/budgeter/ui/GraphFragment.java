@@ -77,7 +77,7 @@ public class GraphFragment extends Fragment{
             i++;
         }
 
-        PieDataSet ds1 = new PieDataSet(entries1, "THUNE !");
+        PieDataSet ds1 = new PieDataSet(entries1, "THUNE !q<");
         ds1.setColors(ColorTemplate.MATERIAL_COLORS);
         ds1.setSliceSpace(2f);
         ds1.setValueTextColor(Color.WHITE);

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.timber.mdelpierre.budgeter.enumeration.LoginEventEnum;
 import com.timber.mdelpierre.budgeter.enumeration.TagEventTypeEnum;
+import com.timber.mdelpierre.budgeter.enumeration.TransactionEventEnum;
 import com.timber.mdelpierre.budgeter.global.ApplicationSharedPreferences;
 import com.timber.mdelpierre.budgeter.model.Account;
 import com.timber.mdelpierre.budgeter.model.Login;
@@ -12,6 +13,7 @@ import com.timber.mdelpierre.budgeter.model.Tag;
 import com.timber.mdelpierre.budgeter.model.Transaction;
 import com.timber.mdelpierre.budgeter.ui.eventBus.LoginEvent;
 import com.timber.mdelpierre.budgeter.ui.eventBus.TagEvents;
+import com.timber.mdelpierre.budgeter.ui.eventBus.TransactionEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -145,14 +147,6 @@ public class RealmHelper {
                     Account ac = realm.createObject(Account.class);
                     ac.name = account.name;
                     ac.accountBalance = 0;
-
-                    /*Transaction tr = realm.createObject(Transaction.class);
-                    tr.value = 0;
-                    Tag tg = realm.createObject(Tag.class);
-                    tg.name = " ";
-                    tr.tag = tg;
-
-                    ac.transactions.add(tr);*/
                     getCurrentLogin(context).accounts.add(ac);
                 }
             });
@@ -184,7 +178,12 @@ public class RealmHelper {
                     tr.tag = transaction.tag;
                     tr.value = transaction.value;
 
-                    getCurrentAccount(context).transactions.add(tr);
+                    Account currentAccount = getCurrentAccount(context);
+                    currentAccount.transactions.add(tr);
+                    currentAccount.accountBalance = (double)currentAccount.transactions.sum("value");
+
+
+                    EventBus.getDefault().post(new TransactionEvent(TransactionEventEnum.TRANSACTION_ADDED));
                 }
             });
         }

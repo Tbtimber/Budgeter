@@ -23,4 +23,6 @@
     <string name="toast_wrong_login">Wrong info !</string>
     <string name="toast_error_creating_account">Error occurred while creating account</string>
     <string name="toast_error_adding_transaction">Error occurred while addind the transaction</string>
+
+    <string name="is_income">Is income</string>
 </resources>

@@ -14,6 +14,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -26,17 +28,22 @@ import android.widget.TextView;
 
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabClickListener;
+import com.timber.mdelpierre.budgeter.enumeration.AccountEventTypeEnum;
 import com.timber.mdelpierre.budgeter.global.ApplicationSharedPreferences;
 import com.timber.mdelpierre.budgeter.model.Account;
 import com.timber.mdelpierre.budgeter.model.Transaction;
 import com.timber.mdelpierre.budgeter.persistance.RealmHelper;
 import com.timber.mdelpierre.budgeter.ui.DashboardFragment;
 import com.timber.mdelpierre.budgeter.ui.DialogAddAccount;
+import com.timber.mdelpierre.budgeter.ui.DialogAddTransaction;
 import com.timber.mdelpierre.budgeter.ui.GraphFragment;
 import com.timber.mdelpierre.budgeter.ui.HistoryFragment;
 import com.timber.mdelpierre.budgeter.ui.LoginActivity;
 import com.timber.mdelpierre.budgeter.ui.adapter.NavDrawerAdapter;
+import com.timber.mdelpierre.budgeter.ui.eventBus.AccountEvent;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -81,6 +88,8 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         RealmHelper.initRealm(this);
+        EventBus.getDefault().register(this);
+
 
         mTvHeaderName.setText(ApplicationSharedPreferences.getInstance(this).getCurrentLogin());
 
@@ -92,6 +101,14 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
 
         //Setup Drawer Layout
         setSupportActionBar(mToolbar);
+
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         mNavAdapter = new NavDrawerAdapter(RealmHelper.getAccounts(this) ,this);
 
 
@@ -117,9 +134,28 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mBottomNav.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        DialogFragment d = new DialogAddTransaction();
+        d.show(getFragmentManager(), "");
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -174,4 +210,13 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
             mDrawerLayout.closeDrawers();
         }
     };
+
+
+    @Subscribe
+    public void onEvent(AccountEvent event) {
+        if(event.getType() == AccountEventTypeEnum.ACCOUNT_ADDED) {
+            onTabSelected(mBottomNav.getCurrentTabPosition());
+            mDrawerLayout.closeDrawers();
+        }
+    }
 }

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -45,6 +46,9 @@ public class DialogAddTransaction extends DialogFragment {
     @Bind(R.id.flow_tags)
     FlowLayout mFlowTags;
 
+    @Bind(R.id.cb_isIncome_addTransaction)
+    CheckBox mCbIsIncome;
+
     private List<View> mEtTagList;
 
     private LinearLayout mSelectedTag;
@@ -73,12 +77,18 @@ public class DialogAddTransaction extends DialogFragment {
                     return;
                 }
                 boolean realmBool;
+                double value = Double.parseDouble(mEtTransactionValue.getText().toString());
+                if(!mCbIsIncome.isChecked()) {
+                    value *= -1;
+                }
+
+
                 if(mSelectedTag == null) {
                     realmBool = RealmHelper.addTransactionToRealm(getActivity(), new Date(System.currentTimeMillis()),
-                            -1*Double.parseDouble(mEtTransactionValue.getText().toString()), "others");
+                            value, "others");
                 } else {
                     realmBool = RealmHelper.addTransactionToRealm(getActivity(), new Date(System.currentTimeMillis()),
-                            -1*Double.parseDouble(mEtTransactionValue.getText().toString()),
+                            value,
                             ((TextView) mSelectedTag.getChildAt(0)).getText().toString());
                 }
                 if(!realmBool) {
