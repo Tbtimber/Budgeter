@@ -60,7 +60,7 @@ public class HistoryListAdapter extends BaseAdapter {
         }
 
         if(position < mTransactions.size()) {
-            Transaction tr = mTransactions.get(position);
+            Transaction tr = mTransactions.get(mTransactions.size()- 1 - position);
             holder.mTvalue.setText(String.valueOf(tr.value));
             holder.mTvTag.setText(tr.tag.name);
 

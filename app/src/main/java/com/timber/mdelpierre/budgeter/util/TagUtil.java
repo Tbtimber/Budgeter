@@ -8,9 +8,13 @@ import android.widget.TextView;
 
 import com.timber.mdelpierre.budgeter.R;
 import com.timber.mdelpierre.budgeter.enumeration.TagEventTypeEnum;
+import com.timber.mdelpierre.budgeter.model.TransactionGroup;
+import com.timber.mdelpierre.budgeter.persistance.RealmHelper;
 import com.timber.mdelpierre.budgeter.ui.eventBus.TagEvents;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.List;
 
 /**
  * Created by Matthieu on 20/06/2016.
@@ -65,5 +69,17 @@ public class TagUtil {
     public static void setTagLayoutToSelect(LinearLayout ll) {
         TextView tv = (TextView)ll.getChildAt(0);
         tv.setAlpha(1.0f);
+    }
+
+    public static TransactionGroup getTopTag(Context context) {
+        List<TransactionGroup> groups = GraphUtil.getTransactionGroups(RealmHelper.getTransactionsOfAccount(context));
+        double value = 0;
+        TransactionGroup biggest = null;
+        for (TransactionGroup tg : groups) {
+            if(tg.getValue() >= value) {
+                biggest = tg;
+            }
+        }
+        return biggest;
     }
 }

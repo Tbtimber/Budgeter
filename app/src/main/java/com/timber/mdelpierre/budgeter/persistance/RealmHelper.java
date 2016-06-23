@@ -180,6 +180,12 @@ public class RealmHelper {
 
                     Account currentAccount = getCurrentAccount(context);
                     currentAccount.transactions.add(tr);
+                    Collections.sort(currentAccount.transactions, new Comparator<Transaction>() {
+                        @Override
+                        public int compare(Transaction lhs, Transaction rhs) {
+                            return lhs.date.compareTo(rhs.date);
+                        }
+                    });
                     currentAccount.accountBalance = (double)currentAccount.transactions.sum("value");
 
 
