@@ -37,7 +37,13 @@
         </RelativeLayout>
     </TableRow>
 
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@drawable/dashboard_line_separator" />
+
     <TableRow
+        android:id="@+id/tr_dash_2"
         android:layout_weight="1">
         <RelativeLayout
             android:id="@+id/ll_dash_day_spending"
@@ -72,6 +78,11 @@
         </RelativeLayout>
     </TableRow>
 
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@drawable/dashboard_line_separator" />
+
     <TableRow
         android:layout_weight="1">
         <RelativeLayout
@@ -80,13 +91,12 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             >
-            <Button
-                android:id="@+id/bt_dash_add_transaction"
+            <com.github.mikephil.charting.charts.LineChart
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_centerInParent="true"
-                android:text="Add Transaction"/>
+                android:layout_centerInParent="true">
+
+            </com.github.mikephil.charting.charts.LineChart>
         </RelativeLayout>
     </TableRow>
 </TableLayout>

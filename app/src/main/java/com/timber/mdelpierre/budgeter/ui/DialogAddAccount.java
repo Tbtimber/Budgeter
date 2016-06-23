@@ -42,10 +42,11 @@ public class DialogAddAccount extends DialogFragment {
         builder.setView(view).setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                ApplicationSharedPreferences.getInstance(getActivity()).setCurrentAccount(mEditText.getText().toString());
-                EventBus.getDefault().post(new AccountEvent(AccountEventTypeEnum.ACCOUNT_ADDED));
                 if(!RealmHelper.addAccountToRealm(getActivity(), mEditText.getText().toString())) {
                     Toast.makeText(getActivity(),getResources().getString(R.string.toast_error_creating_account), Toast.LENGTH_LONG).show();
+                } else {
+                    ApplicationSharedPreferences.getInstance(getActivity()).setCurrentAccount(mEditText.getText().toString());
+                    EventBus.getDefault().post(new AccountEvent(AccountEventTypeEnum.ACCOUNT_ADDED));
                 }
             }
         });

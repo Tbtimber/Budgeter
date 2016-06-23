@@ -34,6 +34,7 @@
         android:layout_toEndOf="@id/tv_date_history"
         android:layout_toStartOf="@id/tv_value_history"
         android:layout_toLeftOf="@id/tv_value_history"
+        android:layout_marginLeft="10dp"
         android:layout_centerVertical="true"
         />
 

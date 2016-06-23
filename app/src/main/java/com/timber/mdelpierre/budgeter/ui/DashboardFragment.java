@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.timber.mdelpierre.budgeter.R;
@@ -102,4 +104,5 @@ public class DashboardFragment extends Fragment {
             refreshView();
         }
     }
+
 }

@@ -14,6 +14,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -33,6 +35,7 @@ import com.timber.mdelpierre.budgeter.model.Transaction;
 import com.timber.mdelpierre.budgeter.persistance.RealmHelper;
 import com.timber.mdelpierre.budgeter.ui.DashboardFragment;
 import com.timber.mdelpierre.budgeter.ui.DialogAddAccount;
+import com.timber.mdelpierre.budgeter.ui.DialogAddTransaction;
 import com.timber.mdelpierre.budgeter.ui.GraphFragment;
 import com.timber.mdelpierre.budgeter.ui.HistoryFragment;
 import com.timber.mdelpierre.budgeter.ui.LoginActivity;
@@ -98,6 +101,14 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
 
         //Setup Drawer Layout
         setSupportActionBar(mToolbar);
+
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         mNavAdapter = new NavDrawerAdapter(RealmHelper.getAccounts(this) ,this);
 
 
@@ -132,6 +143,19 @@ public class MainActivity extends AppCompatActivity implements OnTabClickListene
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mBottomNav.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        DialogFragment d = new DialogAddTransaction();
+        d.show(getFragmentManager(), "");
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
